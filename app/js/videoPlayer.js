@@ -11,6 +11,9 @@ class VideoPlayer {
    * @return {VideoPlayer} returns an instance of a VideoPlayer.
    */
   constructor() {
+    this.currentTime = 0;
+    this.inFullScreen = false;
+    this.videoProgressInterval;
     this.attributes = new Map();
   }
 
@@ -40,49 +43,214 @@ class VideoPlayer {
   /**
    * Handler to show or hide the video player controls based upon some action.
    *
-   * @return {Object} TODO.
+   * @return {Boolean}
    */
-  showHideControls() {
+  initShowHideControls() {
     let videoControls = this.getAttr('videoControls');
-    let player = this.getAttr('player')
+    let player = this.getAttr('player');
 
+    // Add event listeners for mouse hover
     player.addEventListener('mouseover', function() {
       videoControls.style.opacity = 1;
     }, false);
+
     videoControls.addEventListener('mouseover', function() {
       videoControls.style.opacity = 1;
     }, false);
+
     player.addEventListener('mouseleave', function() {
       videoControls.style.opacity = 0;
     }, false);
+
     videoControls.addEventListener('mouseout', function() {
       videoControls.style.opacity = 0;
     }, false);
+
+    return true;
   }
 
   /**
    * When appropriate, perform initial procedures on the video player.
    *
-   * @return {Object} TODO.
+   * @return {Object}
    */
   initializeControls() {
     console.log('initializeControls called');
-    this.showHideControls();
+    this.initShowHideControls();
   }
 
   /**
-   * Performs various initialization operations on the video player itself
-   * upon being created.
+   * TODO.
    *
-   * @return {Object} .
+   * @return {Object}
    */
-  init() {
-    console.log('init called');
-    let player = this.getAttr('player')
+  togglePlayPause() {
+    console.log('togglePlayPause called');
+    let player = this.getAttr('player');
+
+    if (player.paused || player.ended) {
+      // Update the currentTime if the video has ended
+      if (player.ended) {
+        player.currentTime = 0;
+      }
+
+      player.play();
+    } else {
+      player.pause();
+    }
+  }
+
+  /**
+   * TODO.
+   *
+   * @return {Object}
+   */
+  pauseVideo() {
+    console.log('pauseVideo called');
+  }
+
+  /**
+   * Update the progress bar based upon the current progress of the video being
+   * played. The necessary DOM elements are supplied as arguments to avoid
+   * having to repeatedly fetch them from the Map.
+   *
+   * @player {HTMLVideoElement} Video DOM element.
+   * @videoProgressBar {Object} Video progress bar DOM element.
+   * @videoProgressCont {Object} Video proress container DOM element.
+   * @return {Object}
+   */
+  updatePlaybackProgress(player, videoProgressBar, videoProgressCont) {
+    // Set width based upon current position and overal length
+    let currTime = player.currentTime;
+    let duration = player.duration;
+    let position = (currTime / duration) * videoProgressCont.offsetWidth;
+
+    this.currentTime = position;
+    videoProgressBar.style.width = `${position}px`
+  }
+
+  /**
+   * Track video playback progress and update the player accordingly.
+   *
+   * @return {Object}
+   */
+  trackPlaybackProgress() {
+    let player = this.getAttr('player');
+    let videoProgressBar = this.getAttr('videoProgressBar');
+    let videoProgressCont = this.getAttr('videoProgressCont');
+
+    /*
+      The update frequency should ideally be based upon some metric, but we'll
+      use a 50 millisecond update frequency for simplicity.
+    */
+    (function progressPlayback(videoPlayer) {
+      videoPlayer.updatePlaybackProgress(player, videoProgressBar, videoProgressCont);
+      videoPlayer.videoProgressInterval = setTimeout(function() {
+        progressPlayback(videoPlayer);
+      }, 50);
+    })(this);
+  }
+
+  /**
+   * Stop tracking the video playback progress. This happens when a video is
+   * paused. The timeout is simply cleared from when `progressPlayback` is
+   * invoked.
+   *
+   * @return {Object}
+   */
+  haltTrackingPlaybackProgress() {
+    clearTimeout(this.videoProgressInterval);
+  }
+
+  /**
+   * Add the appropriate actions to the play/pause button.
+   *
+   * @return {Object}
+   */
+  initializePlayActions() {
+    let player = this.getAttr('player');
+    let playButton = this.getAttr('playButton');
+
+    // Add event listeners for when the play/pause button is pressed
+    player.addEventListener('click', this.togglePlayPause.bind(this), false);
+    playButton.addEventListener('click', this.togglePlayPause.bind(this), false);
+
+    // Add event listeners to handle toggling of the play/pause SVG upon click
+    player.addEventListener('play', function() {
+      playButton.setAttribute('title', 'Pause');
+      playButton.innerHTML = '<rect width="6" height="20" x="0" y="0" />' +
+        '<rect width="6" height="20" x="12" y="0" />';
+
+      // Track the video progress
+      this.trackPlaybackProgress();
+    }.bind(this), false);
+
+    player.addEventListener('pause', function() {
+      playButton.setAttribute('title', 'Play');
+      playButton.innerHTML = '<polygon points="1,0 20,10 1,20" />';
+
+      // Update video playback progress when paused
+      this.haltTrackingPlaybackProgress();
+    }.bind(this), false);
+
+    player.addEventListener('ended', function() {
+      this.currentTime = 0;
+      this.pauseVideo();
+    }.bind(this), false);
+
+    return true;
+  }
+
+  /**
+   * Initialize video controls after a desired state.
+   *
+   * @return {Object}
+   */
+  initializeVideoControls() {
+    let player = this.getAttr('player');
 
     player.addEventListener(
       'loadeddata',
-      this.initializeControls.bind(this), false
+      this.initializeControls.bind(this),
+      false
     );
+  }
+
+  /**
+   * Add necessary listeners and handlers to support video playback scrubbing.
+   *
+   * @return {Object}
+   */
+  scrubVideoProgress() {
+    let player = this.getAttr('player');
+    let videoProgressCont = this.getAttr('videoProgressCont');
+
+    videoProgressCont.addEventListener(
+      'mousedown',
+      function() {
+        // Stop tracking video playback progress
+        this.haltTrackingPlaybackProgress();
+
+        // Toggle video playback
+        this.togglePlayPause();
+
+        // Set new (scrubbed) playback progress
+      }.bind(this),
+      false
+    );
+  }
+
+  /**
+   * Perform neccessary initialization operations on the video player itself
+   * upon being created.
+   *
+   * @return {Object}
+   */
+  init() {
+    // Initialize video controls
+    this.initializeVideoControls();
+
+    // Play/pause button handler
+    this.initializePlayActions();
   }
 }
