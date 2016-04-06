@@ -10,10 +10,9 @@
   */
   videoPlayer.setAttr('player', document.getElementById('video-player'));
   videoPlayer.setAttr('videoControls', document.getElementById('video-controls'));
-  videoPlayer.setAttr('playButton', document.getElementById('play'));
-  videoPlayer.setAttr('videoProgress', document.getElementById('video-progress'));
-  videoPlayer.setAttr('videoProgressBox', document.getElementById('video-box'));
-  videoPlayer.setAttr('fsButton', document.getElementById('full-screen'));
+  videoPlayer.setAttr('playButton', document.getElementById('play-btn'));
+  videoPlayer.setAttr('videoProgressCont', document.getElementById('video-progress'));
+  videoPlayer.setAttr('videoProgressBar', document.getElementById('playback-progress'));
 
   videoPlayer.init();
 }(this, document));
