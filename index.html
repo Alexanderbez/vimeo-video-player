@@ -2,33 +2,32 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <title>Vimeo Video Player Challenge</title>
-    <link rel="stylesheet" type="text/css" href="app/css/main.css">
-    <script type="text/javascript" async src="app/js/videoPlayer.js"></script>
-    <script type="text/javascript" async src="app/js/app.js"></script>
+  <meta charset="utf-8">
+  <title>Vimeo Video Player Challenge</title>
+  <link rel="stylesheet" type="text/css" href="app/css/main.css">
 </head>
 
 <body>
-    <div id="container">
-        <!-- Vimeo Video Player Container -->
-        <div id="video-container">
-            <!-- Vimeo Video Player -->
-            <video id="video-player" width="1000">
-                <source src="http://nettuts.s3.amazonaws.com/763_sammyJSIntro/trailer_test.mp4" type="video/mp4">
-            </video>
-            <!-- Vimeo Video Player Controls -->
-            <div id="video-controls">
-                <button id="play" title="Play">&#x25BA;</button>
-                <div id="video-progress">
-                    <div id="progress-box">
-                        <span id="play-progress"></span>
-                    </div>
-                    <button id="full-screen" title="FullScreen Toggle">FS</button>
-                </div>
-            </div>
+  <div id="container">
+    <!-- Vimeo Video Player Container -->
+    <div id="video-container">
+      <!-- Vimeo Video Player -->
+      <video id="video-player" width="1000">
+        <source src="http://nettuts.s3.amazonaws.com/763_sammyJSIntro/trailer_test.mp4" type="video/mp4">
+      </video>
+      <!-- Vimeo Video Player Controls -->
+      <div id="video-controls">
+        <button id="play" title="Play">&#x25BA;</button>
+        <div id="video-progress">
+          <div id="progress-box">
+            <span id="play-progress"></span>
+          </div>
+          <button id="full-screen" title="FullScreen Toggle">FS</button>
         </div>
+      </div>
     </div>
+  </div>
 </body>
-
+<script type="text/javascript" src="app/js/videoPlayer.js"></script>
+<script type="text/javascript" src="app/js/app.js"></script>
 </html>
