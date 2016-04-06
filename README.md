@@ -15,3 +15,12 @@ Your source code should use vanilla JavaScript with no third party library depen
 
 ## Video App
 
+
+## TODO
+
+* Wrap up video playback scrubbing
+* Implement video playback buffering
+  * See [here](http://www.w3schools.com/tags/av_prop_buffered.asp) for reference.
+* Style
+  * Video controls
+  * Main page
