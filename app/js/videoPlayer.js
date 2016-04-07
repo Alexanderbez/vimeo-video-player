@@ -131,7 +131,10 @@ class VideoPlayer {
     let duration = player.duration;
     let position = (currTime / duration) * videoProgressCont.offsetWidth;
 
+    // Update playback progress time
     this.currentTime = position;
+
+    // Set progress bar width accordingly
     videoProgressBar.style.width = `${position}px`
   }
 
@@ -223,11 +226,44 @@ class VideoPlayer {
   }
 
   /**
+   * TODO.
+   *
+   * @pos {Number} TODO.
+   * @return {Object}
+   */
+  setPlaybackProgress(pos) {
+    let player = this.getAttr('player');
+    let videoProgressBar = this.getAttr('videoProgressBar');
+    let videoProgressCont = this.getAttr('videoProgressCont');
+    console.log(this);
+    console.log(pos);
+    console.log(player);
+    console.log(videoProgressBar);
+    console.log(videoProgressCont);
+
+    // Find the new scrubed location
+    let posX = videoProgressCont.offsetLeft;
+    let tmp = videoProgressCont;
+
+    while (tmp = tmp.offsetParent) {
+        console.log(tmp);
+      posX += tmp.offsetLeft;
+    }
+
+    // Determine where the new playback position is
+    let clickPos = (pos - posX) / videoProgressCont.offsetWidth;
+    let percent = Math.max(0, Math.min(1, clickPos));
+
+    player.currentTime = percent * player.duration;
+    videoProgressBar.style.width = `$(percent * videoProgressCont.offsetWidth)px`;
+  }
+
+  /**
    * Add necessary listeners and handlers to support video playback scrubbing.
    *
    * @return {Object}
    */
-  scrubVideoProgress() {
+  initializeScrubVideoProgress() {
     let player = this.getAttr('player');
     let videoProgressCont = this.getAttr('videoProgressCont');
 
@@ -240,10 +276,16 @@ class VideoPlayer {
         // Toggle video playback
         this.togglePlayPause();
 
-        // Set new (scrubbed) playback progress
-      }.bind(this),
-      false
-    );
+        // Set new (scrubbed) playback progress based on a mouse event
+        videoProgressCont.onmouseup = function(e) {
+          this.document.onmouseup = null;
+          this.document.onmousemove = null;
+
+          player.play();
+          this.setPlaybackProgress(e.pageX);
+          this.trackPlaybackProgress();
+        }.bind(this);
+      }.bind(this), true);
   }
 
   /**
@@ -258,5 +300,8 @@ class VideoPlayer {
 
     // Play/pause button handler
     this.initializePlayActions();
+
+    // Initialize scrubbing functionality
+    this.initializeScrubVideoProgress();
   }
 }
