@@ -1,7 +1,7 @@
 'use strict';
 
 (function(window, document) {
-  let videoPlayer = new VideoPlayer();
+  let videoPlayer = new VideoPlayer(window, document);
 
   /*
     Set video player attributes such as the controls and various sections.
@@ -14,5 +14,6 @@
   videoPlayer.setAttr('videoProgressCont', document.getElementById('video-progress'));
   videoPlayer.setAttr('videoProgressBar', document.getElementById('playback-progress'));
 
+  // Initialize video player
   videoPlayer.init();
 }(this, document));

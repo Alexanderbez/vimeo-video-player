@@ -10,7 +10,13 @@ class VideoPlayer {
    *
    * @return {VideoPlayer} returns an instance of a VideoPlayer.
    */
-  constructor() {
+  constructor(window, document) {
+    /*
+      Keep reference to both the window and document objects in order to
+      support features such as full screen, video scrubbing, and buffering.
+    */
+    this.window = window;
+    this.document = document;
     this.currentTime = 0;
     this.inFullScreen = false;
     this.videoProgressInterval;
