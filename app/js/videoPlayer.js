@@ -65,11 +65,11 @@ class VideoPlayer {
     }, false);
 
     player.addEventListener('mouseleave', function() {
-      videoControls.style.opacity = 0;
+      videoControls.style.opacity = 1;
     }, false);
 
     videoControls.addEventListener('mouseout', function() {
-      videoControls.style.opacity = 0;
+      videoControls.style.opacity = 1;
     }, false);
 
     return true;
@@ -121,21 +121,21 @@ class VideoPlayer {
    * having to repeatedly fetch them from the Map.
    *
    * @player {HTMLVideoElement} Video DOM element.
-   * @videoProgressBar {Object} Video progress bar DOM element.
-   * @videoProgressCont {Object} Video proress container DOM element.
+   * @videoPlaybackBar {Object} Video playback bar DOM element.
+   * @videoProgressBar {Object} Video progress container DOM element.
    * @return {Object}
    */
-  updatePlaybackProgress(player, videoProgressBar, videoProgressCont) {
+  updatePlaybackProgress(player, videoPlaybackBar, videoProgressBar) {
     // Set width based upon current position and overal length
     let currTime = player.currentTime;
     let duration = player.duration;
-    let position = (currTime / duration) * videoProgressCont.offsetWidth;
+    let position = (currTime / duration) * videoProgressBar.offsetWidth;
 
     // Update playback progress time
     this.currentTime = position;
 
     // Set progress bar width accordingly
-    videoProgressBar.style.width = `${position}px`
+    videoPlaybackBar.style.width = `${position}px`
   }
 
   /**
@@ -145,15 +145,15 @@ class VideoPlayer {
    */
   trackPlaybackProgress() {
     let player = this.getAttr('player');
+    let videoPlaybackBar = this.getAttr('videoPlaybackBar');
     let videoProgressBar = this.getAttr('videoProgressBar');
-    let videoProgressCont = this.getAttr('videoProgressCont');
 
     /*
       The update frequency should ideally be based upon some metric, but we'll
       use a 50 millisecond update frequency for simplicity.
     */
     (function progressPlayback(videoPlayer) {
-      videoPlayer.updatePlaybackProgress(player, videoProgressBar, videoProgressCont);
+      videoPlayer.updatePlaybackProgress(player, videoPlaybackBar, videoProgressBar);
       videoPlayer.videoProgressInterval = setTimeout(function() {
         progressPlayback(videoPlayer);
       }, 50);
@@ -232,12 +232,12 @@ class VideoPlayer {
    */
   setPlaybackProgress(pos) {
     let player = this.getAttr('player');
-    let videoProgressBar = this.getAttr('videoProgressBar');
+    let videoPlaybackBar = this.getAttr('videoPlaybackBar');
     let videoProgressCont = this.getAttr('videoProgressCont');
     console.log(this);
     console.log(pos);
     console.log(player);
-    console.log(videoProgressBar);
+    console.log(videoPlaybackBar);
     console.log(videoProgressCont);
 
     // Find the new scrubed location
@@ -253,7 +253,7 @@ class VideoPlayer {
     let percent = Math.max(0, Math.min(1, clickPos));
 
     player.currentTime = percent * player.duration;
-    videoProgressBar.style.width = `$(percent * videoProgressCont.offsetWidth)px`;
+    videoPlaybackBar.style.width = `$(percent * videoProgressCont.offsetWidth)px`;
   }
 
   /**
@@ -305,5 +305,9 @@ class VideoPlayer {
 
     // Initialize scrubbing functionality
     this.initializeScrubVideoProgress();
+
+    // TMP
+    let player = this.getAttr('player');
+    player.volume = 0;
   }
 }
