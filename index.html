@@ -4,30 +4,35 @@
 <head>
   <meta charset="utf-8">
   <title>Vimeo Video Player Challenge</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
   <link rel="stylesheet" type="text/css" href="app/css/main.css">
 </head>
 
 <body>
-  <div id="container">
-    <!-- Vimeo Video Player Container -->
+  <section id="wrapper">
     <div id="video-container">
-      <!-- Vimeo Video Player -->
-      <video id="video-player" width="1000">
-        <source src="http://nettuts.s3.amazonaws.com/763_sammyJSIntro/trailer_test.mp4" type="video/mp4">
+      <video id="video-player">
+        <source src="http://vjs.zencdn.net/v/oceans.mp4" type="video/mp4" />
+        <p>Ooops, looks like your browser does not support the html5 video tag.</p>
       </video>
-      <!-- Vimeo Video Player Controls -->
       <div id="video-controls">
-        <svg id="play-btn" title="Play" width="40" height="40" viewBox="0 0 20 20" preserveAspectRatio="xMidYMid">
-          <polygon points="1,0 20,10 1,20"/>
-        </svg>
-        <div id="video-progress">
-          <div id="progress-bar">
-            <span id="playback-progress"></span>
+        <div class="btmControl">
+          <div id="play-btn" class="control-btn" title="Play video">
+            <i class="fa fa-play" aria-hidden="true"></i>
+          </div>
+          <div id="video-progress-container">
+            <div id="progress-bar">
+              <span id="video-buffer-bar"></span>
+              <span id="video-playback-bar"></span>
+            </div>
+          </div>
+          <div id="fs-btn" class="control-btn" title="Toggle full screen">
+            <i class="fa fa-expand" aria-hidden="true"></i>
           </div>
         </div>
       </div>
     </div>
-  </div>
+  </section>
 </body>
 <script type="text/javascript" src="app/js/videoPlayer.js"></script>
 <script type="text/javascript" src="app/js/app.js"></script>
