@@ -187,8 +187,7 @@ class VideoPlayer {
     // Add event listeners to handle toggling of the play/pause SVG upon click
     player.addEventListener('play', function() {
       playButton.setAttribute('title', 'Pause');
-      playButton.innerHTML = '<rect width="6" height="20" x="0" y="0" />' +
-        '<rect width="6" height="20" x="12" y="0" />';
+      playButton.children[0].className = 'fa fa-pause';
 
       // Track the video progress
       this.trackPlaybackProgress();
@@ -196,7 +195,7 @@ class VideoPlayer {
 
     player.addEventListener('pause', function() {
       playButton.setAttribute('title', 'Play');
-      playButton.innerHTML = '<polygon points="1,0 20,10 1,20" />';
+      playButton.children[0].className = 'fa fa-play';
 
       // Update video playback progress when paused
       this.haltTrackingPlaybackProgress();
@@ -246,7 +245,6 @@ class VideoPlayer {
     let tmp = videoProgressCont;
 
     while (tmp = tmp.offsetParent) {
-        console.log(tmp);
       posX += tmp.offsetLeft;
     }
 
@@ -277,6 +275,10 @@ class VideoPlayer {
         this.togglePlayPause();
 
         // Set new (scrubbed) playback progress based on a mouse event
+        this.document.onmousemove = function(e) {
+          this.setPlaybackProgress(e.pageX);
+        }.bind(this);
+
         videoProgressCont.onmouseup = function(e) {
           this.document.onmouseup = null;
           this.document.onmousemove = null;
