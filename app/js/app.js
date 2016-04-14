@@ -13,7 +13,8 @@
   videoPlayer.setAttr('playButton', document.getElementById('play-btn'));
   videoPlayer.setAttr('fsButton', document.getElementById('fs-btn'));
   videoPlayer.setAttr('videoProgressCont', document.getElementById('video-progress-container'));
-  videoPlayer.setAttr('videoProgressBar', document.getElementById('video-playback-bar'));
+  videoPlayer.setAttr('videoProgressBar', document.getElementById('progress-bar'));
+  videoPlayer.setAttr('videoPlaybackBar', document.getElementById('video-playback-bar'));
   videoPlayer.setAttr('videoBufferBar', document.getElementById('video-buffer-bar'));
 
   // Initialize video player
