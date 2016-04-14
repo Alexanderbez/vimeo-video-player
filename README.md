@@ -18,7 +18,6 @@ Your source code should use vanilla JavaScript with no third party library depen
 
 ## TODO
 
-* Fix video playback scrubbing progress bar width
 * Implement video playback buffering
   * See [here](http://www.w3schools.com/tags/av_prop_buffered.asp) for reference.
 * Style
