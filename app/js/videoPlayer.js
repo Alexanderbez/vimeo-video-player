@@ -199,6 +199,40 @@ class VideoPlayer {
   }
 
   /**
+   * TODO.
+   *
+   * @player {HTMLVideoElement} Video DOM element.
+   * @videoBufferBar {Object} Video buffer bar DOM element.
+   * @videoProgressBar {Object} Video progress container DOM element.
+   * @return {Object}
+   */
+  updateBufferProgress(player, videoBufferBar, videoProgressBar) {
+    // let buffEnd = player.buffered.end(0);
+    // let duration = player.duration;
+    // let buffered = 100 * (buffEnd / videoProgressBar.offsetWidth);
+
+    // videoBufferBar.style.width = `${buffered}px`;
+  }
+
+  /**
+   * TODO.
+   *
+   * @return {Object}
+   */
+  bufferVideo() {
+    let player = this.getAttr('player');
+    let videoBufferBar = this.getAttr('videoBufferBar');
+    let videoProgressBar = this.getAttr('videoProgressBar');
+
+    (function updateVideoBuffer(videoPlayer) {
+      videoPlayer.updateBufferProgress(player, videoBufferBar, videoProgressBar);
+      setTimeout(function() {
+        updateVideoBuffer(videoPlayer);
+      }, 100);
+    })(this);
+  }
+
+  /**
    * Add the appropriate actions to the play/pause button.
    *
    * @return {Object}
@@ -246,7 +280,13 @@ class VideoPlayer {
 
     player.addEventListener(
       'loadeddata',
-      this.initializeControls.bind(this),
+      function() {
+        // Initialize controls
+        this.initializeControls();
+
+        // Initialize video buffering
+        this.bufferVideo();
+      }.bind(this),
       false
     );
   }
