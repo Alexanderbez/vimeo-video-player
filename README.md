@@ -19,6 +19,8 @@ Your source code should use vanilla JavaScript with no third party library depen
 ## TODO
 
 * Implement full screen support???
+** Hide FS button/edit playback bar width if browser does not support FS.
+** Skin controls on full screen
 * Implement video playback buffering
   * See [here](http://www.w3schools.com/tags/av_prop_buffered.asp) for reference.
 * Style
