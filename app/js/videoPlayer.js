@@ -20,6 +20,7 @@ class VideoPlayer {
     this.currentTime = 0;
     this.inFullScreen = false;
     this.videoProgressInterval;
+    this.videoBufferInterval;
     this.attributes = new Map();
   }
 
@@ -107,7 +108,6 @@ class VideoPlayer {
    * @return {Object}
    */
   initializeControls() {
-    console.log('initializeControls called');
     this.initShowHideControls();
     this.initFullScreenToggle();
   }
@@ -118,7 +118,6 @@ class VideoPlayer {
    * @return {Object}
    */
   togglePlayPause() {
-    console.log('togglePlayPause called');
     let player = this.getAttr('player');
 
     if (player.paused || player.ended) {
@@ -199,7 +198,8 @@ class VideoPlayer {
   }
 
   /**
-   * TODO.
+   * Updates the video buffer progress bar based upon the `buffered` object on
+   * the video element.
    *
    * @player {HTMLVideoElement} Video DOM element.
    * @videoBufferBar {Object} Video buffer bar DOM element.
@@ -207,12 +207,21 @@ class VideoPlayer {
    * @return {Object}
    */
   updateBufferProgress(player, videoBufferBar, videoProgressBar) {
-    // let buffEnd = player.buffered.end(0);
-    // let duration = player.duration;
-    // let buffered = 100 * (buffEnd / videoProgressBar.offsetWidth);
+    let buffEnd = player.buffered.end(0);
+    let duration = player.duration;
+    let buffered = (buffEnd / duration) * videoProgressBar.offsetWidth;
 
-    // videoBufferBar.style.width = `${buffered}px`;
+    videoBufferBar.style.width = `${buffered}px`;
   }
+
+  /**
+   * Resets the video buffered progress interval.
+   *
+   * @return {Object}
+   */
+   resetBufferProgress() {
+    clearTimeout(this.videoBufferInterval);
+   }
 
   /**
    * TODO.
@@ -226,7 +235,7 @@ class VideoPlayer {
 
     (function updateVideoBuffer(videoPlayer) {
       videoPlayer.updateBufferProgress(player, videoBufferBar, videoProgressBar);
-      setTimeout(function() {
+      videoPlayer.videoBufferInterval = setTimeout(function() {
         updateVideoBuffer(videoPlayer);
       }, 100);
     })(this);
@@ -281,10 +290,7 @@ class VideoPlayer {
     player.addEventListener(
       'loadeddata',
       function() {
-        // Initialize controls
         this.initializeControls();
-
-        // Initialize video buffering
         this.bufferVideo();
       }.bind(this),
       false
@@ -345,9 +351,13 @@ class VideoPlayer {
           this.document.onmouseup = null;
           this.document.onmousemove = null;
 
+          // Resume video
           player.play();
+
+          // Update playback progress
           this.setPlaybackProgress(e.pageX);
           this.trackPlaybackProgress();
+          this.bufferVideo();
         }.bind(this);
       }.bind(this), true);
   }
