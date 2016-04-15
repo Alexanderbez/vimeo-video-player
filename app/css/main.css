@@ -91,6 +91,7 @@ body {
   z-index: 10;
   width: 0;
   background: -webkit-linear-gradient(top, #ff1a00 0%, #cf0404 100%);
+  background: -moz-linear-gradient(top, #ff1a00 0%, #cf0404 100%);
 }
 
 #video-buffer-bar {
