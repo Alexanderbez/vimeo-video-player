@@ -76,6 +76,32 @@ class VideoPlayer {
   }
 
   /**
+   * Implements full screen toggle support.
+   *
+   * @return {Boolean}
+   */
+  initFullScreenToggle() {
+    let player = this.getAttr('player');
+    let fsButton = this.getAttr('fsButton');
+
+    fsButton.addEventListener('click', function() {
+      let inFullScreen = this.document.fullscreenEnabled ||
+        this.document.mozFullscreenEnabled ||
+        this.document.webkitIsFullScreen ? true : false;
+
+      if (!inFullScreen) {
+        if (player.webkitEnterFullscreen) {
+          player.webkitEnterFullscreen();
+        } else if (player.mozRequestFullScreen) {
+          player.mozRequestFullScreen();
+        }
+      }
+    }.bind(this), false);
+
+    return true;
+  }
+
+  /**
    * When appropriate, perform initial procedures on the video player.
    *
    * @return {Object}
@@ -83,6 +109,7 @@ class VideoPlayer {
   initializeControls() {
     console.log('initializeControls called');
     this.initShowHideControls();
+    this.initFullScreenToggle();
   }
 
   /**
