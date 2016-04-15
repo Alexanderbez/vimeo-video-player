@@ -301,11 +301,6 @@ class VideoPlayer {
     let player = this.getAttr('player');
     let videoPlaybackBar = this.getAttr('videoPlaybackBar');
     let videoProgressCont = this.getAttr('videoProgressCont');
-    console.log(this);
-    console.log(pos);
-    console.log(player);
-    console.log(videoPlaybackBar);
-    console.log(videoProgressCont);
 
     // Find the new scrubed location
     let posX = videoProgressCont.offsetLeft;
