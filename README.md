@@ -18,10 +18,13 @@ Your source code should use vanilla JavaScript with no third party library depen
 
 ## TODO
 
-* Implement full screen support???
-** Hide FS button/edit playback bar width if browser does not support FS.
-** Skin controls on full screen
 * Implement video playback buffering
   * See [here](http://www.w3schools.com/tags/av_prop_buffered.asp) for reference.
+* Base black background
+* Fix scrubbing bug on Firefox
+* Safari is fucked...fix it (ES6 issues???)
+* Hide FS button/edit playback bar width if browser does not support FS.
+* Initial play button in the center on load
 * Style
   * Main page
+* Skin controls on full screen
