@@ -10,6 +10,7 @@
   */
   videoPlayer.setAttr('player', document.getElementById('video-player'));
   videoPlayer.setAttr('videoControls', document.getElementById('video-controls'));
+  videoPlayer.setAttr('initPlayBtn', document.getElementById('init-play-btn'));
   videoPlayer.setAttr('playButton', document.getElementById('play-btn'));
   videoPlayer.setAttr('fsButton', document.getElementById('fs-btn'));
   videoPlayer.setAttr('videoProgressCont', document.getElementById('video-progress-container'));
