@@ -55,8 +55,19 @@ class VideoPlayer {
   initShowHideControls() {
     let videoControls = this.getAttr('videoControls');
     let player = this.getAttr('player');
+    let initPlayBtn = this.getAttr('initPlayBtn');
 
-    // Add event listeners for mouse hover
+    // Setup init play button
+    initPlayBtn.addEventListener('click', function() {
+      initPlayBtn.style.opacity = 0;
+      setTimeout(function() {
+        initPlayBtn.style.display = 'none';
+      }, 1000);
+      videoControls.style.display = 'block';
+      this.togglePlayPause();
+    }.bind(this), false);
+
+    // Add event listeners for mouse hover on the video controls panel
     player.addEventListener('mouseover', function() {
       videoControls.style.opacity = 1;
     }, false);
@@ -66,11 +77,11 @@ class VideoPlayer {
     }, false);
 
     player.addEventListener('mouseleave', function() {
-      videoControls.style.opacity = 1;
+      videoControls.style.opacity = 0;
     }, false);
 
     videoControls.addEventListener('mouseout', function() {
-      videoControls.style.opacity = 1;
+      videoControls.style.opacity = 0;
     }, false);
 
     return true;
@@ -219,9 +230,9 @@ class VideoPlayer {
    *
    * @return {Object}
    */
-   resetBufferProgress() {
+  resetBufferProgress() {
     clearTimeout(this.videoBufferInterval);
-   }
+  }
 
   /**
    * TODO.
