@@ -53,7 +53,7 @@ class VideoPlayer {
    *
    * @return {Boolean}
    */
-  initShowHideControls() {
+  initPlayerControls() {
     let videoControls = this.getAttr('videoControls');
     let player = this.getAttr('player');
     let initPlayBtn = this.getAttr('initPlayBtn');
@@ -90,7 +90,18 @@ class VideoPlayer {
   }
 
   /**
-   * Implements full screen toggle support.
+   * Determines of the user browser supports full screen functionality.
+   *
+   * @return {Boolean}
+   */
+  fullScreenEnabled() {
+    return this.document.fullscreenEnabled ||
+      this.document.mozFullScreenEnabled ||
+      this.document.webkitFullscreenEnabled ? true : false;
+  }
+
+  /**
+   * Implements full screen toggle support (if the user browser supports it).
    *
    * @return {Boolean}
    */
@@ -98,21 +109,19 @@ class VideoPlayer {
     let player = this.getAttr('player');
     let fsButton = this.getAttr('fsButton');
 
-    fsButton.addEventListener('click', function() {
-      let inFullScreen = this.document.fullscreenEnabled ||
-        this.document.mozFullscreenEnabled ||
-        this.document.webkitIsFullScreen ? true : false;
-
-      if (!inFullScreen) {
+    if (this.fullScreenEnabled()) {
+      fsButton.addEventListener('click', function() {
         if (player.webkitEnterFullscreen) {
           player.webkitEnterFullscreen();
         } else if (player.mozRequestFullScreen) {
           player.mozRequestFullScreen();
         }
-      }
-    }.bind(this), false);
+      }.bind(this), false);
 
-    return true;
+      return true;
+    } else {
+      return false;
+    }
   }
 
   /**
@@ -185,7 +194,7 @@ class VideoPlayer {
    * @return {Object}
    */
   initializeControls() {
-    this.initShowHideControls();
+    this.initPlayerControls();
     this.initFullScreenToggle();
     this.initVideoTimes();
   }
