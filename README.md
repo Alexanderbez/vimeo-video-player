@@ -42,5 +42,7 @@ Visit `http://locahost:1337`
 * Safari v9.0.3
 
 ## Wish List/TODO
+
+* Add volume/mute functionality
 * Skin UI controls on full screen (browser dependent)
 * Investigate Safari full screen height bug
