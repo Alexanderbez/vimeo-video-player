@@ -21,6 +21,7 @@ class VideoPlayer {
     this.inFullScreen = false;
     this.videoProgressInterval;
     this.videoBufferInterval;
+    this.videoCurrTimeInterval;
     this.attributes = new Map();
   }
 
@@ -115,6 +116,70 @@ class VideoPlayer {
   }
 
   /**
+   * Builds a String, given a Number, in the format of MM:ss.
+   *
+   * @t {Number}
+   * @return {String}
+   */
+  getVideoTime(t) {
+    let min = Math.floor(t / 60.0);
+    let sec = Math.ceil(t % 60.0);
+
+    if (sec < 10) {
+      sec = `0${sec}`;
+    }
+
+    return `${min}:${sec}`
+  }
+
+  /**
+   * Creates the current playback time and video duration DOM elements and adds
+   * them to the video controls panel.
+   *
+   * @return {Object}
+   */
+  initVideoTimes() {
+    let player = this.getAttr('player');
+    let videoDurationTime = this.getAttr('videoDurationTime');
+    let videoCurrTime = this.getAttr('videoCurrTime');
+
+    // Add video duration node
+    let durationEl = this.document.createElement('span');
+    durationEl.innerHTML = this.getVideoTime(player.duration);
+    videoDurationTime.appendChild(durationEl);
+
+    // Add video current time node
+    let currTimeEl = this.document.createElement('span');
+    currTimeEl.innerHTML = this.getVideoTime(player.currentTime);
+    videoCurrTime.appendChild(currTimeEl);
+  }
+
+  /**
+   * Update the current playback time value in the control panel.
+   *
+   * @return {Object}
+   */
+  updateTrackVideoTime() {
+    let player = this.getAttr('player');
+    let videoCurrTime = this.getAttr('videoCurrTime');
+    videoCurrTime.children[0].innerHTML = this.getVideoTime(player.currentTime);
+  }
+
+  /**
+   * Track the current playback time value in the control panel every second.
+   *
+   * @return {Object}
+   */
+  trackVideoTime() {
+    (function updateCurrTimeNode(videoPlayer) {
+      videoPlayer.updateTrackVideoTime();
+      videoPlayer.videoCurrTimeInterval = setTimeout(function() {
+        updateCurrTimeNode(videoPlayer);
+      }, 1000);
+    })(this);
+  }
+
+  /**
    * When appropriate, perform initial procedures on the video player.
    *
    * @return {Object}
@@ -122,6 +187,7 @@ class VideoPlayer {
   initializeControls() {
     this.initShowHideControls();
     this.initFullScreenToggle();
+    this.initVideoTimes();
   }
 
   /**
@@ -264,6 +330,9 @@ class VideoPlayer {
 
       // Track the video progress
       this.trackPlaybackProgress();
+
+      // Track the video playback time
+      this.trackVideoTime();
     }.bind(this), false);
 
     player.addEventListener('pause', function() {
@@ -276,6 +345,7 @@ class VideoPlayer {
 
     player.addEventListener('ended', function() {
       this.currentTime = 0;
+      clearTimeout(this.videoCurrTimeInterval);
     }.bind(this), false);
 
     return true;
@@ -348,6 +418,7 @@ class VideoPlayer {
         // Set new (scrubbed) playback progress based on a mouse event
         this.document.onmousemove = function(e) {
           this.setPlaybackProgress(e.pageX);
+          this.updateTrackVideoTime();
         }.bind(this);
 
         videoProgressCont.onmouseup = function(e) {
@@ -360,6 +431,7 @@ class VideoPlayer {
           // Update playback progress and buffer progress
           this.setPlaybackProgress(e.pageX);
           this.trackPlaybackProgress();
+          this.updateTrackVideoTime();
           this.bufferVideo();
         }.bind(this);
       }.bind(this), true);

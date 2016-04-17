@@ -17,12 +17,14 @@
         <p>Ooops, looks like your browser does not support the html5 video tag.</p>
       </video>
       <div id="video-init">
-        <i class="material-icons md-light" id="init-play-btn">play_arrow</i>
+        <i class="material-icons md-light" id="init-play-btn">play_circle_outline</i>
       </div>
       <div id="video-controls">
         <div class="btmControl">
-          <div id="play-btn" class="control-btn" title="Play video">
+          <div id="play-btn" class="section ctrl-btn" title="Play video">
             <i class="material-icons md-light">play_arrow</i>
+          </div>
+          <div id="video-curr-time" class="section video-time">
           </div>
           <div id="video-progress-container">
             <div id="progress-bar">
@@ -30,7 +32,9 @@
               <span id="video-playback-bar"></span>
             </div>
           </div>
-          <div id="fs-btn" class="control-btn" title="Enter full screen">
+          <div id="video-duration" class="section video-time">
+          </div>
+          <div id="fs-btn" class="section ctrl-btn" title="Enter full screen">
             <i class="material-icons md-light">fullscreen</i>
           </div>
         </div>

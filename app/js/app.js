@@ -17,6 +17,8 @@
   videoPlayer.setAttr('videoProgressBar', document.getElementById('progress-bar'));
   videoPlayer.setAttr('videoPlaybackBar', document.getElementById('video-playback-bar'));
   videoPlayer.setAttr('videoBufferBar', document.getElementById('video-buffer-bar'));
+  videoPlayer.setAttr('videoDurationTime', document.getElementById('video-duration'));
+  videoPlayer.setAttr('videoCurrTime', document.getElementById('video-curr-time'));
 
   // Initialize video player
   videoPlayer.init();
