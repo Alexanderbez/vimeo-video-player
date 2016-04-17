@@ -4,8 +4,9 @@
 <head>
   <meta charset="utf-8">
   <title>Vimeo Video Player Challenge</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="app/css/main.css">
+  <script type="text/javascript" src="app/js/videoPlayer.js"></script>
 </head>
 
 <body>
@@ -16,13 +17,12 @@
         <p>Ooops, looks like your browser does not support the html5 video tag.</p>
       </video>
       <div id="video-init">
-        <i class="fa fa-play" id="init-play-btn" aria-hidden="true">
-        </i>
+        <i class="material-icons md-light" id="init-play-btn">play_arrow</i>
       </div>
       <div id="video-controls">
         <div class="btmControl">
           <div id="play-btn" class="control-btn" title="Play video">
-            <i class="fa fa-play" aria-hidden="true"></i>
+            <i class="material-icons md-light">play_arrow</i>
           </div>
           <div id="video-progress-container">
             <div id="progress-bar">
@@ -31,14 +31,13 @@
             </div>
           </div>
           <div id="fs-btn" class="control-btn" title="Enter full screen">
-            <i class="fa fa-expand" aria-hidden="true"></i>
+            <i class="material-icons md-light">fullscreen</i>
           </div>
         </div>
       </div>
     </div>
   </section>
 </body>
-<script type="text/javascript" src="app/js/videoPlayer.js"></script>
 <script type="text/javascript" src="app/js/app.js"></script>
 
 </html>

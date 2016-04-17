@@ -61,7 +61,8 @@ class VideoPlayer {
     initPlayBtn.addEventListener('click', function() {
       initPlayBtn.style.opacity = 0;
       setTimeout(function() {
-        initPlayBtn.style.display = 'none';
+        let videoInitEl = document.getElementById('video-init');
+        this.document.getElementById('video-container').removeChild(videoInitEl);
       }, 1000);
       videoControls.style.display = 'block';
       this.togglePlayPause();
@@ -141,15 +142,6 @@ class VideoPlayer {
     } else {
       player.pause();
     }
-  }
-
-  /**
-   * TODO.
-   *
-   * @return {Object}
-   */
-  pauseVideo() {
-    console.log('pauseVideo called');
   }
 
   /**
@@ -268,7 +260,7 @@ class VideoPlayer {
     // Add event listeners to handle toggling of the play/pause SVG upon click
     player.addEventListener('play', function() {
       playButton.setAttribute('title', 'Pause');
-      playButton.children[0].className = 'fa fa-pause';
+      playButton.children[0].innerHTML = 'pause';
 
       // Track the video progress
       this.trackPlaybackProgress();
@@ -276,7 +268,7 @@ class VideoPlayer {
 
     player.addEventListener('pause', function() {
       playButton.setAttribute('title', 'Play');
-      playButton.children[0].className = 'fa fa-play';
+      playButton.children[0].innerHTML = 'play_arrow';
 
       // Update video playback progress when paused
       this.haltTrackingPlaybackProgress();
@@ -284,7 +276,6 @@ class VideoPlayer {
 
     player.addEventListener('ended', function() {
       this.currentTime = 0;
-      this.pauseVideo();
     }.bind(this), false);
 
     return true;
@@ -332,7 +323,8 @@ class VideoPlayer {
     let percent = Math.max(0, Math.min(1, clickPos));
 
     player.currentTime = percent * player.duration;
-    videoPlaybackBar.style.width = `$(percent * videoProgressCont.offsetWidth)px`;
+    let newPlaybackProgress = percent * videoProgressCont.offsetWidth;
+    videoPlaybackBar.style.width = `$(newPlaybackProgress)px`;
   }
 
   /**
@@ -365,7 +357,7 @@ class VideoPlayer {
           // Resume video
           player.play();
 
-          // Update playback progress
+          // Update playback progress and buffer progress
           this.setPlaybackProgress(e.pageX);
           this.trackPlaybackProgress();
           this.bufferVideo();
