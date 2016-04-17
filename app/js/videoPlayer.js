@@ -23,6 +23,19 @@ class VideoPlayer {
     this.videoBufferInterval;
     this.videoCurrTimeInterval;
     this.attributes = new Map();
+
+    // Retrieve neccessary DOM nodes for video player functionality
+    this.player = document.getElementById('video-player');
+    this.videoControls = document.getElementById('video-controls');
+    this.initPlayBtn = document.getElementById('init-play-btn');
+    this.playButton = document.getElementById('play-btn');
+    this.fsButton = document.getElementById('fs-btn');
+    this.videoProgressCont = document.getElementById('video-progress-container');
+    this.videoProgressBar = document.getElementById('progress-bar');
+    this.videoPlaybackBar = document.getElementById('video-playback-bar');
+    this.videoBufferBar = document.getElementById('video-buffer-bar');
+    this.videoDurationTime = document.getElementById('video-duration');
+    this.videoCurrTime = document.getElementById('video-curr-time');
   }
 
   /**
@@ -54,9 +67,9 @@ class VideoPlayer {
    * @return {Boolean}
    */
   initPlayerControls() {
-    let videoControls = this.getAttr('videoControls');
-    let player = this.getAttr('player');
-    let initPlayBtn = this.getAttr('initPlayBtn');
+    let videoControls = this.videoControls;
+    let player = this.player;
+    let initPlayBtn = this.initPlayBtn;
 
     // Setup init play button
     initPlayBtn.addEventListener('click', function() {
@@ -115,8 +128,8 @@ class VideoPlayer {
    * @return {Boolean}
    */
   initFullScreenToggle() {
-    let player = this.getAttr('player');
-    let fsButton = this.getAttr('fsButton');
+    let player = this.player;
+    let fsButton = this.fsButton;
 
     if (this.fullScreenEnabled()) {
       fsButton.addEventListener('click', function() {
@@ -157,9 +170,9 @@ class VideoPlayer {
    * @return {Object}
    */
   initVideoTimes() {
-    let player = this.getAttr('player');
-    let videoDurationTime = this.getAttr('videoDurationTime');
-    let videoCurrTime = this.getAttr('videoCurrTime');
+    let player = this.player;
+    let videoDurationTime = this.videoDurationTime;
+    let videoCurrTime = this.videoCurrTime;
 
     // Add video duration node
     let durationEl = this.document.createElement('span');
@@ -178,8 +191,8 @@ class VideoPlayer {
    * @return {Object}
    */
   updateTrackVideoTime() {
-    let player = this.getAttr('player');
-    let videoCurrTime = this.getAttr('videoCurrTime');
+    let player = this.player;
+    let videoCurrTime = this.videoCurrTime;
     videoCurrTime.children[0].innerHTML = this.getVideoTime(player.currentTime);
   }
 
@@ -214,7 +227,7 @@ class VideoPlayer {
    * @return {Object}
    */
   togglePlayPause() {
-    let player = this.getAttr('player');
+    let player = this.player;
 
     if (player.paused || player.ended) {
       // Update the currentTime if the video has ended
@@ -257,9 +270,9 @@ class VideoPlayer {
    * @return {Object}
    */
   trackPlaybackProgress() {
-    let player = this.getAttr('player');
-    let videoPlaybackBar = this.getAttr('videoPlaybackBar');
-    let videoProgressBar = this.getAttr('videoProgressBar');
+    let player = this.player;
+    let videoPlaybackBar = this.videoPlaybackBar;
+    let videoProgressBar = this.videoProgressBar;
 
     /*
       The update frequency should ideally be based upon some metric, but we'll
@@ -316,9 +329,9 @@ class VideoPlayer {
    * @return {Object}
    */
   bufferVideo() {
-    let player = this.getAttr('player');
-    let videoBufferBar = this.getAttr('videoBufferBar');
-    let videoProgressBar = this.getAttr('videoProgressBar');
+    let player = this.player;
+    let videoBufferBar = this.videoBufferBar;
+    let videoProgressBar = this.videoProgressBar;
 
     (function updateVideoBuffer(videoPlayer) {
       videoPlayer.updateBufferProgress(player, videoBufferBar, videoProgressBar);
@@ -334,8 +347,8 @@ class VideoPlayer {
    * @return {Object}
    */
   initializePlayActions() {
-    let player = this.getAttr('player');
-    let playButton = this.getAttr('playButton');
+    let player = this.player;
+    let playButton = this.playButton;
 
     // Add event listeners for when the play/pause button is pressed
     player.addEventListener('click', this.togglePlayPause.bind(this), false);
@@ -375,7 +388,7 @@ class VideoPlayer {
    * @return {Object}
    */
   initializeVideoControls() {
-    let player = this.getAttr('player');
+    let player = this.player;
 
     player.addEventListener(
       'loadeddata',
@@ -394,9 +407,9 @@ class VideoPlayer {
    * @return {Object}
    */
   setPlaybackProgress(pos) {
-    let player = this.getAttr('player');
-    let videoPlaybackBar = this.getAttr('videoPlaybackBar');
-    let videoProgressCont = this.getAttr('videoProgressCont');
+    let player = this.player;
+    let videoPlaybackBar = this.videoPlaybackBar;
+    let videoProgressCont = this.videoProgressCont;
 
     // Find the new scrubed location
     let posX = videoProgressCont.offsetLeft;
@@ -421,8 +434,8 @@ class VideoPlayer {
    * @return {Object}
    */
   initializeScrubVideoProgress() {
-    let player = this.getAttr('player');
-    let videoProgressCont = this.getAttr('videoProgressCont');
+    let player = this.player;
+    let videoProgressCont = this.videoProgressCont;
 
     videoProgressCont.addEventListener(
       'mousedown',
@@ -472,7 +485,7 @@ class VideoPlayer {
     this.initializeScrubVideoProgress();
 
     // TMP
-    let player = this.getAttr('player');
+    let player = this.player;
     player.volume = 0;
   }
 }
