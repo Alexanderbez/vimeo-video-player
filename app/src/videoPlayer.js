@@ -64,7 +64,7 @@ class VideoPlayer {
   }
 
   /**
-   * Handler to show or hide the video player controls based upon some action.
+   * Implements various initial video control features.
    *
    * @return {Boolean}
    */
@@ -125,7 +125,8 @@ class VideoPlayer {
   }
 
   /**
-   * Implements full screen toggle support (if the user browser supports it).
+   * Implements full screen toggle functionality
+   * (if the user browser supports it).
    *
    * @return {Boolean}
    */
@@ -167,7 +168,8 @@ class VideoPlayer {
 
   /**
    * Creates the current playback time and video duration DOM elements and adds
-   * them to the video controls panel.
+   * them to the video controls panel as well as adding toggle functionality
+   * on the video duration node to display remaining time.
    *
    * @return {Object}
    */
@@ -185,11 +187,9 @@ class VideoPlayer {
     durationEl.addEventListener('click', function() {
       if (this.videoDurationToggle) {
         this.videoDurationToggle = false;
-        // this.updateRemainingTime();
       } else {
         this.videoDurationToggle = true;
       }
-      // this.updateRemainingTime();
     }.bind(this), false);
 
     // Add video current time node
@@ -199,8 +199,7 @@ class VideoPlayer {
   }
 
   /**
-   * Toggles between video duration and video remaining time and updates the
-   * remaining time depending on the toggle value.
+   * Updates the remaining time node value depending on the toggle value.
    *
    * @return {Object}
    */
@@ -217,7 +216,8 @@ class VideoPlayer {
   }
 
   /**
-   * TODO.
+   * Tracks the amount of video playback time remaining every second and
+   * updates the value accordingly.
    *
    * @return {Object}
    */
@@ -231,7 +231,7 @@ class VideoPlayer {
   }
 
   /**
-   * Update the current playback time value in the control panel.
+   * Updates the current playback time value in the control panel.
    *
    * @return {Object}
    */
@@ -242,7 +242,7 @@ class VideoPlayer {
   }
 
   /**
-   * Track the current playback time value in the control panel every second.
+   * Tracks the current playback time value in the control panel every second.
    *
    * @return {Object}
    */
@@ -256,7 +256,7 @@ class VideoPlayer {
   }
 
   /**
-   * When appropriate, perform initial procedures on the video player.
+   * Performs initial procedures on the video player.
    *
    * @return {Object}
    */
@@ -267,7 +267,7 @@ class VideoPlayer {
   }
 
   /**
-   * TODO.
+   * Toggles between playing and pausing the video playback.
    *
    * @return {Object}
    */
@@ -287,9 +287,9 @@ class VideoPlayer {
   }
 
   /**
-   * Update the progress bar based upon the current progress of the video being
-   * played. The necessary DOM elements are supplied as arguments to avoid
-   * having to repeatedly fetch them from the Map.
+   * Updates the progress bar based upon the current progress of the video
+   * being played. The necessary DOM elements are supplied as arguments to
+   * avoid having to repeatedly fetch them from the Map.
    *
    * @player {HTMLVideoElement} Video DOM element.
    * @videoPlaybackBar {Object} Video playback bar DOM element.
@@ -310,7 +310,7 @@ class VideoPlayer {
   }
 
   /**
-   * Track video playback progress and update the player accordingly.
+   * Tracks video playback progress and update the player accordingly.
    *
    * @return {Object}
    */
@@ -332,7 +332,7 @@ class VideoPlayer {
   }
 
   /**
-   * Stop tracking the video playback progress. This happens when a video is
+   * Stops tracking the video playback progress. This happens when a video is
    * paused. The timeout is simply cleared from when `progressPlayback` is
    * invoked.
    *
@@ -369,7 +369,8 @@ class VideoPlayer {
   }
 
   /**
-   * TODO.
+   * Tracks the video buffering progress and updates the buffer bar as needed.
+   * The update frequency is every 100ms.
    *
    * @return {Object}
    */
@@ -387,7 +388,7 @@ class VideoPlayer {
   }
 
   /**
-   * Add the appropriate actions to the play/pause button.
+   * Adds the appropriate actions to the play/pause buttons.
    *
    * @return {Object}
    */
@@ -432,7 +433,7 @@ class VideoPlayer {
   }
 
   /**
-   * Initialize video controls after a desired state.
+   * Initializes video controls after the `loadeddata` event is fired.
    *
    * @return {Object}
    */
@@ -450,9 +451,11 @@ class VideoPlayer {
   }
 
   /**
-   * TODO.
+   * Determines the video playback progress value when the video is being
+   * scrubbed. This is accomplished by using the horizontal mouse position and
+   * the properties of the playback control bar.
    *
-   * @pos {Number} TODO.
+   * @pos {Number} Mouse position.
    * @return {Object}
    */
   setPlaybackProgress(pos) {
@@ -478,7 +481,7 @@ class VideoPlayer {
   }
 
   /**
-   * Add necessary listeners and handlers to support video playback scrubbing.
+   * Adds necessary listeners and handlers to support video playback scrubbing.
    *
    * @return {Object}
    */
@@ -520,8 +523,7 @@ class VideoPlayer {
   }
 
   /**
-   * Perform neccessary initialization operations on the video player itself
-   * upon being created.
+   * Performs the video player state initialization.
    *
    * @return {Object}
    */
@@ -534,9 +536,5 @@ class VideoPlayer {
 
     // Initialize scrubbing functionality
     this.initializeScrubVideoProgress();
-
-    // TMP
-    let player = this.player;
-    player.volume = 0;
   }
 }
