@@ -19,9 +19,11 @@ class VideoPlayer {
     this.document = document;
     this.currentTime = 0;
     this.inFullScreen = false;
+    this.videoDurationToggle = true;
     this.videoProgressInterval;
     this.videoBufferInterval;
     this.videoCurrTimeInterval;
+    this.trackRemainingTimeInterval;
     this.attributes = new Map();
 
     // Retrieve neccessary DOM nodes for video player functionality
@@ -179,10 +181,53 @@ class VideoPlayer {
     durationEl.innerHTML = this.getVideoTime(player.duration);
     videoDurationTime.appendChild(durationEl);
 
+    // Add duration/remaining click event toggle
+    durationEl.addEventListener('click', function() {
+      if (this.videoDurationToggle) {
+        this.videoDurationToggle = false;
+        // this.updateRemainingTime();
+      } else {
+        this.videoDurationToggle = true;
+      }
+      // this.updateRemainingTime();
+    }.bind(this), false);
+
     // Add video current time node
     let currTimeEl = this.document.createElement('span');
     currTimeEl.innerHTML = this.getVideoTime(player.currentTime);
     videoCurrTime.appendChild(currTimeEl);
+  }
+
+  /**
+   * Toggles between video duration and video remaining time and updates the
+   * remaining time depending on the toggle value.
+   *
+   * @return {Object}
+   */
+  updateRemainingTime() {
+    let player = this.player;
+    let durationEl = this.videoDurationTime.children[0];
+
+    if (!this.videoDurationToggle) {
+      let remainingTime = this.getVideoTime(player.duration - player.currentTime);
+      durationEl.innerHTML = `-${remainingTime}`;
+    } else {
+      durationEl.innerHTML = this.getVideoTime(player.duration);
+    }
+  }
+
+  /**
+   * TODO.
+   *
+   * @return {Object}
+   */
+  trackRemainingTime() {
+    (function updateTrackRemainingTime(videoPlayer) {
+      videoPlayer.updateRemainingTime();
+      videoPlayer.trackRemainingTimeInterval = setTimeout(function() {
+        updateTrackRemainingTime(videoPlayer);
+      }, 1000);
+    })(this);
   }
 
   /**
@@ -364,6 +409,9 @@ class VideoPlayer {
 
       // Track the video playback time
       this.trackVideoTime();
+
+      // Track the playback remaining time
+      this.trackRemainingTime();
     }.bind(this), false);
 
     player.addEventListener('pause', function() {
@@ -377,6 +425,7 @@ class VideoPlayer {
     player.addEventListener('ended', function() {
       this.currentTime = 0;
       clearTimeout(this.videoCurrTimeInterval);
+      clearTimeout(this.trackRemainingTimeInterval);
     }.bind(this), false);
 
     return true;
@@ -450,6 +499,7 @@ class VideoPlayer {
         this.document.onmousemove = function(e) {
           this.setPlaybackProgress(e.pageX);
           this.updateTrackVideoTime();
+          this.updateRemainingTime();
         }.bind(this);
 
         videoProgressCont.onmouseup = function(e) {
@@ -463,6 +513,7 @@ class VideoPlayer {
           this.setPlaybackProgress(e.pageX);
           this.trackPlaybackProgress();
           this.updateTrackVideoTime();
+          this.updateRemainingTime();
           this.bufferVideo();
         }.bind(this);
       }.bind(this), true);
