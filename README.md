@@ -15,16 +15,32 @@ Your source code should use vanilla JavaScript with no third party library depen
 
 ## Video App
 
+### Preliminary
 
-## TODO
+`Grunt` tasks are implemented to transpile ES6 to ES5 for Safari support and to run a local server serving the video player app.
 
-* Implement video playback buffering
-  * See [here](http://www.w3schools.com/tags/av_prop_buffered.asp) for reference.
-* Base black background
-* Fix scrubbing bug on Firefox
-* Safari is fucked...fix it (ES6 issues???)
-* Hide FS button/edit playback bar width if browser does not support FS.
-* Initial play button in the center on load
-* Style
-  * Main page
-* Skin controls on full screen
+```shell
+$ npm install
+```
+
+```shell
+$ grunt
+```
+
+Visit `http://locahost:1337`
+
+### Additional Functionality
+
+* Full screen functionality
+* Additional video player controls
+* Various video timing elements in the control panel with toggle functionality
+
+### Supported/Tested Browsers
+
+* Chrome v47.0
+* Firefox v45.0.2
+* Safari v9.0.3
+
+## Wish List/TODO
+* Skin UI controls on full screen (browser dependent)
+* Investigate Safari full screen height bug
