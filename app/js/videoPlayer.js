@@ -69,6 +69,15 @@ class VideoPlayer {
       this.togglePlayPause();
     }.bind(this), false);
 
+    // Determine if the full screen button should be disabled/non-visable
+    if (!this.fullScreenEnabled) {
+      let fsButton = this.getAttr('fsButton');
+      let videoProgressCont = this.getAttr('videoProgressCont');
+
+      fsButton.style.display = 'none';
+      videoProgressCont.style.width = '85%';
+    }
+
     // Add event listeners for mouse hover on the video controls panel
     player.addEventListener('mouseover', function() {
       videoControls.style.opacity = 1;
