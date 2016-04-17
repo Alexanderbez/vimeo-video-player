@@ -15,3 +15,34 @@ Your source code should use vanilla JavaScript with no third party library depen
 
 ## Video App
 
+### Preliminary
+
+`Grunt` tasks are implemented to transpile ES6 to ES5 for Safari support and to run a local server serving the video player app.
+
+```shell
+$ npm install
+```
+
+```shell
+$ grunt
+```
+
+Visit `http://locahost:1337`
+
+### Additional Functionality
+
+* Full screen functionality
+* Additional video player controls
+* Various video timing elements in the control panel with toggle functionality
+
+### Supported/Tested Browsers
+
+* Chrome v47.0
+* Firefox v45.0.2
+* Safari v9.0.3
+
+## Wish List/TODO
+
+* Add volume/mute functionality
+* Skin UI controls on full screen (browser dependent)
+* Investigate Safari full screen height bug
